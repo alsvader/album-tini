@@ -55,7 +55,7 @@ export function LandingSteps() {
                 >
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute -top-10 select-none font-script text-8xl font-bold text-paper/10"
+                    className="pointer-events-none absolute -top-10 select-none font-script text-8xl font-bold text-paper/10 md:-top-16 md:text-7xl"
                   >
                     {index + 1}
                   </span>
