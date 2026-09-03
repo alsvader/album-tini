@@ -11,3 +11,4 @@ next-env.d.ts
 tsconfig.tsbuildinfo
 src/data/doodles.generated.ts
 .claude/settings.local.json
+supabase/.temp/
