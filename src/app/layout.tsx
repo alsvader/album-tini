@@ -22,10 +22,27 @@ const dancingScript = Dancing_Script({
   display: 'swap',
 })
 
+/**
+ * Dominio real en producción, para que las URLs absolutas de `og:image` no
+ * salgan apuntando a localhost. Sin `NEXT_PUBLIC_SITE_URL` (checklist de
+ * `.env.example`), cae en localhost — sirve para dev, rompería en prod.
+ */
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'Diario de Tini',
   description:
     'Un diario digital interactivo: fotografías instantáneas, notas escritas a mano y un poco de magia.',
+  openGraph: {
+    siteName: 'Álbum de Tini',
+    locale: 'es_ES',
+    type: 'website',
+  },
+  twitter: {
+    // Sin esto, X no muestra `og:image` como imagen grande al compartir.
+    card: 'summary_large_image',
+  },
 }
 
 export const viewport: Viewport = {
