@@ -1,0 +1,33 @@
+{
+  "project": "Album Tini Interactive Journal",
+  "version": "1.0.0",
+  "palette": {
+    "backgroundDeep": "#160019",
+    "backgroundMid": "#290023",
+    "violet": "#51003F",
+    "magenta": "#8A006A",
+    "hotPink": "#FF24E4",
+    "softPink": "#FF6DB6",
+    "electricViolet": "#BD00FF",
+    "cyan": "#00F3FF",
+    "lime": "#BDED00",
+    "paper": "#FAF7F4"
+  },
+  "journal": {
+    "frontCover": "/assets/journal/front-cover.webp",
+    "backCover": "/assets/journal/back-cover.webp",
+    "insidePage": "/assets/journal/inside-page.webp",
+    "closure": "/assets/journal/flower-closure.svg"
+  },
+  "textures": {
+    "paper": "/assets/textures/paper.webp",
+    "polaroid": "/assets/textures/polaroid-paper.webp",
+    "coverNormal": "/assets/textures/cover-normal.png"
+  },
+  "environment": {
+    "particle": "/assets/environment/particle.png",
+    "glowMagenta": "/assets/environment/glow-magenta.png",
+    "glowViolet": "/assets/environment/glow-violet.png",
+    "sparkle": "/assets/environment/sparkle.png"
+  }
+}

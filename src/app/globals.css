@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Tokens de diseño. Paleta tomada de manifest.json / docs/art-direction.png.
+   No se inventan colores principales: rosas, violetas y magentas dominan,
+   el cyan y el lima son sólo acentos.
+------------------------------------------------------------------ */
+@theme {
+  --color-deep: #160019;
+  --color-dark-violet: #290023;
+  --color-purple: #51003f;
+  --color-magenta: #8a006a;
+  --color-hot-pink: #ff24e4;
+  --color-soft-pink: #ff6db6;
+  --color-electric: #bd00ff;
+  --color-cyan: #00f3ff;
+  --color-lime: #bded00;
+  --color-paper: #faf7f4;
+  --color-paper-warm: #f6f0e9;
+  --color-paper-lilac: #ede6f2;
+  --color-ink: #3a2340;
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-dancing), 'Segoe Script', cursive;
+
+  --ease-journal: cubic-bezier(0.65, 0.02, 0.23, 1);
+  --ease-paper: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------ */
+@layer base {
+  html,
+  body {
+    margin: 0;
+    background-color: var(--color-deep);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /*
+    El bloqueo del viewport es por ruta, no global.
+    El diario ocupa la pantalla exacta y no debe scrollear, pero la landing sí
+    tiene que hacerlo: con `overflow: hidden` en el <body> global, la página de
+    inicio quedaba recortada a una pantalla. Lo activa <ViewportLock> en el
+    layout de las rutas de pantalla completa.
+  */
+  body[data-viewport-lock='true'] {
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  /* El álbum se navega con gestos y teclado; el arrastre nativo de imágenes molesta. */
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-soft-pink);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Utilidades propias
+------------------------------------------------------------------ */
+@utility text-balance-tight {
+  text-wrap: balance;
+}
+
+/* Grano de papel reutilizable, aplicado con ::after en Polaroid y páginas. */
+@utility paper-grain {
+  position: relative;
+  isolation: isolate;
+}
+
+@layer utilities {
+  .paper-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: multiply;
+    background-image: url('/assets/textures/paper.webp');
+    background-size: 340px;
+  }
+
+  /* Escenario 3D para el libro DOM: se define una vez y lo heredan las hojas. */
+  .book-stage {
+    perspective: 2400px;
+    transform-style: preserve-3d;
+  }
+
+  .leaf-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

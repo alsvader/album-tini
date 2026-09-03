@@ -1,0 +1,38 @@
+{
+  "name": "album-tini",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/extract-doodles.mjs",
+    "dev": "next dev",
+    "prebuild": "node scripts/extract-doodles.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "assets:doodles": "node scripts/extract-doodles.mjs",
+    "assets:photos": "node scripts/make-mock-photos.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.8",
+    "@react-three/fiber": "9.7.0",
+    "@supabase/ssr": "^0.12.5",
+    "@supabase/supabase-js": "^2.114.0",
+    "framer-motion": "13.1.1",
+    "gsap": "3.15.0",
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "0.185.1",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "22.18.9",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.1",
+    "supabase": "^2.116.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3"
+  }
+}
