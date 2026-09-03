@@ -29,5 +29,10 @@
     "glowMagenta": "/assets/environment/glow-magenta.png",
     "glowViolet": "/assets/environment/glow-violet.png",
     "sparkle": "/assets/environment/sparkle.png"
+  },
+  "landingJournal": {
+    "peek": "/assets/landing/journal-peek.webp",
+    "coverSmall": "/assets/landing/journal-cover-sm.webp",
+    "page": "/assets/landing/journal-page.webp"
   }
 }

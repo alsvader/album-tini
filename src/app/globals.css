@@ -25,6 +25,17 @@
 
   --ease-journal: cubic-bezier(0.65, 0.02, 0.23, 1);
   --ease-paper: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /*
+    Sombras de la landing. La instantánea necesita dos capas —una difusa y
+    ancha para el peso, otra corta y cerrada para el canto del papel—; con una
+    sola, la Polaroid flota en vez de apoyarse. Las «neon» son el halo de los
+    botones y de los badges, y llevan el magenta del propio color, no negro.
+  */
+  --shadow-polaroid: 0 18px 40px -10px rgb(10 0 15 / 0.65), 0 0 25px rgb(255 36 228 / 0.08);
+  --shadow-polaroid-lg: 0 25px 60px -12px rgb(10 0 15 / 0.8), 0 0 35px rgb(255 109 182 / 0.15);
+  --shadow-neon-pink: 0 0 24px rgb(255 36 228 / 0.45);
+  --shadow-neon-glow: 0 0 40px rgb(189 0 255 / 0.35);
 }
 
 /* ------------------------------------------------------------------
@@ -81,6 +92,58 @@
   isolation: isolate;
 }
 
+/*
+  Resplandor de los títulos en font-script. Dos capas: una cerrada que da el
+  color y otra muy abierta que simula la luz rebotando en el fondo violeta.
+  No es `filter: drop-shadow` a propósito: sobre texto, drop-shadow crea capa
+  propia y engorda el coste de repintado de un H1 de 100px.
+*/
+@utility text-glow-title {
+  text-shadow:
+    0 0 30px rgb(255 109 182 / 0.35),
+    0 0 60px rgb(255 36 228 / 0.2);
+}
+
+/*
+  Cinta washi. Sólo el material: la geometría (posición, ancho, ángulo) va en
+  clases normales en el sitio de uso, porque cambia en cada una de las diez
+  cintas de la página.
+
+  El diseño pedía `backdrop-filter: blur(2px)` en cada cinta. Se cambia por un
+  degradado translúcido con `mix-blend-mode`: diez capas de backdrop
+  compositado sobre Polaroids que además se mueven con el scroll costaban
+  frames de más, y a 20px de alto el desenfoque no se distingue.
+*/
+@utility washi-tape {
+  background-image: linear-gradient(
+    100deg,
+    rgb(255 255 255 / 0.3) 0%,
+    rgb(255 255 255 / 0.46) 45%,
+    rgb(255 255 255 / 0.28) 100%
+  );
+  mix-blend-mode: screen;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.15);
+  pointer-events: none;
+}
+
+@utility washi-tape-pink {
+  background-image: linear-gradient(
+    100deg,
+    rgb(255 109 182 / 0.3) 0%,
+    rgb(255 109 182 / 0.45) 45%,
+    rgb(255 36 228 / 0.26) 100%
+  );
+  mix-blend-mode: screen;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.18);
+  pointer-events: none;
+}
+
+/* Mancha de luz atmosférica del fondo de las secciones. */
+@utility glow-blob {
+  filter: blur(80px);
+  pointer-events: none;
+}
+
 @layer utilities {
   .paper-grain::after {
     content: '';
@@ -104,6 +167,75 @@
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     transform-style: preserve-3d;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Animaciones de la landing.
+
+   Van en CSS y no en framer a propósito. Dos razones, y la segunda es la que
+   importa: (1) corren sin esperar a la hidratación, así que el H1 no se queda
+   a opacidad 0 mientras baja el JS; (2) el bloque de `prefers-reduced-motion`
+   de más abajo las apaga solo, desde el primer frame. El store de zustand que
+   lee `useReducedMotion()` arranca en `false` y lo corrige un efecto del
+   layout raíz, que React ejecuta *después* que los de los hijos: cualquier
+   animación decorativa que dependa de ese store parpadea un frame.
+
+   Todo lo que oculta contenido está dentro de `no-preference`: con la
+   preferencia activa, la página se sirve visible y no depende de JavaScript.
+------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @keyframes landing-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes landing-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.6) rotate(-10deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Entrada del hero: `both` deja el estado inicial aplicado durante el delay. */
+  .landing-rise {
+    animation: landing-rise 0.9s var(--ease-paper) both;
+  }
+
+  .landing-pop {
+    animation: landing-pop 0.9s var(--ease-paper) both;
+  }
+
+  /*
+    Aparición al hacer scroll. El estado oculto lo pinta el servidor y lo
+    levanta <Reveal> poniendo data-shown al entrar en viewport.
+  */
+  [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition:
+      opacity 0.7s var(--ease-paper),
+      transform 0.7s var(--ease-paper);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal][data-shown='true'] {
+    opacity: 1;
+    transform: none;
   }
 }
 

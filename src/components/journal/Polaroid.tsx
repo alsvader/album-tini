@@ -39,6 +39,16 @@ type Props = {
    * de requestAnimationFrame tecleando a la vez sobre el pliegue de la página.
    */
   typeCaption?: boolean
+  /**
+   * Anima la entrada de la instantánea. Ponerlo en `false` la pinta ya asentada.
+   *
+   * Hace falta para la landing, y el motivo es de robustez, no estético: con la
+   * entrada activa el HTML del servidor sale con `opacity: 0` y la foto no
+   * aparece hasta que hidrata. En el diario da igual —está detrás de la pantalla
+   * de carga—, pero una portada de marketing no puede depender de que baje el
+   * JavaScript para que se vea la mitad de su composición.
+   */
+  entrance?: boolean
 }
 
 export function Polaroid({
@@ -47,6 +57,7 @@ export function Polaroid({
   className,
   priority = false,
   typeCaption = true,
+  entrance = true,
 }: Props) {
   const reducedMotion = useReducedMotion()
   const rotation = entry.rotation ?? fallbackRotation(entry.id)
@@ -82,12 +93,15 @@ export function Polaroid({
         backgroundImage: `url(${ASSETS.textures.polaroid})`,
         backgroundSize: 'cover',
       }}
-      initial={enterFrom}
-      animate={active ? settled : enterFrom}
+      /*
+        Con `entrance: false`, `initial={false}` le dice a framer que no hay
+        pose de partida: escribe los valores de `animate` directamente, así que
+        el HTML del servidor ya sale con la instantánea colocada.
+      */
+      initial={entrance ? enterFrom : false}
+      animate={active || !entrance ? settled : enterFrom}
       transition={
-        reducedMotion
-          ? { duration: 0.2 }
-          : { duration: 0.78, ease: [0.22, 1, 0.36, 1] }
+        reducedMotion ? { duration: 0.2 } : { duration: 0.78, ease: [0.22, 1, 0.36, 1] }
       }
     >
       {/* Ventana de la foto: cuadrada, como en el original. */}

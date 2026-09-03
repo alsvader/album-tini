@@ -23,6 +23,25 @@ export const ASSETS = {
     glowViolet: '/assets/environment/glow-violet.png',
     sparkle: '/assets/environment/sparkle.png',
   },
+
+  /*
+    Recortes de los assets del diario al tamaño en que la landing los pinta.
+    No son piezas nuevas del pack: derivan de `journal.frontCover` y
+    `journal.insidePage`, y los genera `npm run assets:landing`.
+
+    Existen por peso, no por estética: la portada pesa 599 KB porque el libro
+    3D la usa como textura a 1600x2400, y la landing la enseña en una franja de
+    320x128 y en una miniatura de 224px. Servir el original eran ~700 KB de la
+    primera pantalla para dos adornos.
+
+    Las fotografías decorativas de las Polaroids NO están aquí: son contenido,
+    no asset pack, y viven en `src/data/landing.ts`.
+  */
+  landingJournal: {
+    peek: '/assets/landing/journal-peek.webp',
+    coverSmall: '/assets/landing/journal-cover-sm.webp',
+    page: '/assets/landing/journal-page.webp',
+  },
 } as const
 
 /** Texturas que la escena 3D necesita antes del primer frame. */

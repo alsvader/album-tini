@@ -2,14 +2,18 @@ import type { Metadata } from 'next'
 import { getUser } from '@/lib/supabase/server'
 import { LandingNav } from '@/components/landing/LandingNav'
 import { LandingHero } from '@/components/landing/LandingHero'
+import { LandingJournal } from '@/components/landing/LandingJournal'
 import { LandingSteps } from '@/components/landing/LandingSteps'
 import { LandingSample } from '@/components/landing/LandingSample'
+import { LandingWhy } from '@/components/landing/LandingWhy'
+import { LandingFaq } from '@/components/landing/LandingFaq'
+import { LandingClosing } from '@/components/landing/LandingClosing'
 import { LandingFooter } from '@/components/landing/LandingFooter'
 
 export const metadata: Metadata = {
-  title: 'Álbum de Tini — crea tu diario con tus fotos',
+  title: 'Álbum de Tini — un diario que se abre de verdad',
   description:
-    'Convierte tus fotos en un diario que se abre de verdad: instantáneas, notas escritas a mano y un enlace para compartirlo.',
+    'Sube tus fotos, escribe qué recuerda cada una y comparte un enlace. Quien lo abra verá tu diario abrirse página a página.',
 }
 
 /**
@@ -17,27 +21,28 @@ export const metadata: Metadata = {
  *
  * Server component: resuelve la sesión antes de pintar para que la barra
  * superior salga ya con el enlace correcto y no parpadee de «Entrar» a «Mis
- * álbumes» en la hidratación.
+ * álbumes» en la hidratación. Es lo único que necesita servidor; todas las
+ * secciones son estáticas y sólo bajan al navegador `Doodle`, `Polaroid`,
+ * `Reveal` y la constelación del hero.
+ *
+ * Cada sección pone su propio fondo. Antes había un degradado fijo para toda la
+ * página, pero el diseño alterna clima por sección —el hero y el cierre son
+ * radiales, «el diario» y «así se ve un recuerdo» son verticales— y un fondo
+ * único los aplanaba.
  */
 export default async function LandingPage() {
   const user = await getUser()
 
   return (
     <main className="relative min-h-dvh overflow-x-hidden bg-deep">
-      {/* Fondo de toda la página: el mismo degradado radial del álbum. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10"
-        style={{
-          background:
-            'radial-gradient(ellipse 90% 60% at 50% 0%, rgba(138,0,106,0.45) 0%, rgba(41,0,35,0.7) 45%, #160019 100%)',
-        }}
-      />
-
       <LandingNav signedIn={Boolean(user)} />
       <LandingHero />
+      <LandingJournal />
       <LandingSteps />
       <LandingSample />
+      <LandingWhy />
+      <LandingFaq />
+      <LandingClosing />
       <LandingFooter />
     </main>
   )

@@ -20,6 +20,16 @@ carpeta). Las referencias originales se movieron a `docs/`.
 - `environment/sparkle.png` — destello transparente.
 - `docs/references/*` — imágenes originales de referencia.
 
+Además, derivados generados (no forman parte del pack original):
+
+- `landing/journal-peek.webp` — franja superior de la portada, 640x256.
+- `landing/journal-cover-sm.webp` — portada completa a 448x672.
+- `landing/journal-page.webp` — página interior a 640x960.
+- `landing/{escapada,tarde,risas,abrazos}.webp` — fotografías decorativas de las
+  Polaroids de la landing, generadas con el motor de `scripts/lib/mock-photo.mjs`.
+
+Los cinco primeros se regeneran con `npm run assets:landing`.
+
 ## Recomendación de uso
 
 ### Three.js / React Three Fiber
@@ -28,6 +38,11 @@ Los glows y partículas pueden usarse como sprites o billboards.
 
 ### Interior del álbum
 Usar `inside-page.webp` como fondo decorativo. Colocar por encima las fotografías con marco tipo instantánea.
+
+### Landing
+**No** usar `front-cover.webp` ni `inside-page.webp` directamente en la landing: pesan 599 KB
+y 107 KB porque son texturas del modelo 3D, y ahí se pintan como adornos de 128 a 224 px.
+Usar los derivados de `landing/` (`ASSETS.landingJournal` en `src/lib/assets.ts`).
 
 ### Doodles
 Los SVG usan `stroke="currentColor"` para que Cursor/Claude pueda cambiar su color desde CSS/Tailwind.
