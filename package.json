@@ -11,7 +11,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "assets:doodles": "node scripts/extract-doodles.mjs",
-    "assets:photos": "node scripts/make-mock-photos.mjs"
+    "assets:photos": "node scripts/make-mock-photos.mjs",
+    "assets:landing": "node scripts/make-landing-photos.mjs"
   },
   "dependencies": {
     "@react-three/drei": "10.7.8",
