@@ -1,3 +1,10 @@
+> **Histórico.** Esta especificación describe un `journal.glb` que nunca se
+> autoró. La implementación no usa ningún modelo: cada pieza del diario es
+> geometría procedural (`RoundedBox` + planos con la textura del arte), y los
+> ángulos y pivotes reales viven en `src/lib/three/journalDims.ts` y en los
+> componentes de `src/components/experience/journal/`. Se conserva como registro
+> de la intención inicial; **no seguirla como referencia**.
+
 # journal.glb — especificación para la fase 3D
 
 ## Formato

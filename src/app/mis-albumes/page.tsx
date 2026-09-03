@@ -14,8 +14,12 @@ const formatter = new Intl.DateTimeFormat('es', { day: 'numeric', month: 'long',
 /**
  * Listado de los álbumes del usuario.
  *
- * Server Component: la consulta va con la sesión por cookie, así que RLS ya
- * limita las filas a las suyas y no hace falta filtrar por `owner_id` aquí.
+ * Server Component: la consulta va con la sesión por cookie. Ojo, RLS **no**
+ * basta aquí: las políticas de un mismo comando se combinan con OR y sobre
+ * `albums` hay también una de lectura pública de los publicados, así que el
+ * filtro por `owner_id` de `getMyAlbums()` es imprescindible —el porqué está
+ * entero en la cabecera de esa función, en `src/lib/albums.ts`—.
+ *
  * El action de publicar hace `revalidatePath` sobre esta ruta, que es lo que
  * evita que un álbum recién creado no aparezca.
  */

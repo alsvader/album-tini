@@ -40,8 +40,15 @@ Scripts:
 | `npm run typecheck` | `tsc --noEmit` en modo estricto. |
 | `npm run assets:doodles` | Extrae los `d` de `public/assets/doodles/*.svg` a `src/data/doodles.generated.ts`. |
 | `npm run assets:photos` | Regenera las fotografías mock de `public/photos/` (sólo las de la demo). |
+| `npm run assets:landing` | Genera las imágenes decorativas de la landing y los recortes del diario en `public/assets/landing/`. |
 | `npx supabase start` / `stop` | Stack local en Docker. |
 | `npx supabase db reset` | Recrea la base aplicando las migraciones desde cero. |
+
+> En un checkout limpio, `npm run typecheck` falla hasta ejecutar
+> `npm run assets:doodles`: `src/data/doodles.generated.ts` está gitignorado y
+> sólo lo generan `predev`/`prebuild`. Y `npm run lint` no funciona —`next lint`
+> se eliminó en Next 16 y no hay linter instalado—: la verificación son
+> `typecheck` y `build`. Las reglas de trabajo están en `AGENTS.md`.
 
 ## Diseño (Google Stitch)
 
@@ -65,6 +72,10 @@ export STITCH_API_KEY=…   # antes de arrancar Claude Code
 `docs/landing-redesign-prompt.md` es el prompt que se le dio a Stitch, no su
 resultado. Sirve como referencia de intención; la estructura real de la landing
 es la del diseño.
+
+Las reglas para *implementar* sobre ese sistema —qué componentes reutilizar, qué
+flags necesita `Polaroid` fuera del diario, por qué las clases de Tailwind tienen
+que ser literales— están en `AGENTS.md`.
 
 ## Rutas
 
@@ -117,26 +128,30 @@ src/
 │   ├── crear/               composición y publicación de un álbum
 │   ├── mis-albumes/         listado del usuario
 │   ├── auth/callback/       retorno de OAuth
-│   └── globals.css          tokens de paleta y tipografías
+│   └── globals.css          tokens de paleta y tipografías, utilidades propias
 ├── state/experience.ts      máquina de estados: loading → intro → ready → opening → album
 ├── proxy.ts                 refresco de sesión y rutas protegidas
-├── lib/supabase/            clientes de navegador y servidor, env validado
-├── lib/albums.ts            consultas (servidor) · lib/albumRules.ts (límites, puro)
-├── data/
-│   ├── journal.ts           contenido del álbum de ejemplo (/demo)
-│   ├── spreads.ts           páginas → spreads → hojas (funciones puras)
-│   └── doodles.generated.ts autogenerado desde los SVG
 ├── lib/
+│   ├── supabase/            clientes de navegador y servidor, env validado
+│   ├── albums.ts            consultas (servidor) · albumRules.ts (límites, puro)
+│   ├── assets.ts            rutas del pack de assets, tipadas
+│   ├── resizeImage.ts       redimensionado en canvas antes de subir
 │   ├── framing.ts           puente cámara 3D ↔ tamaño del libro DOM
 │   ├── timings.ts           compás compartido entre las capas 3D y DOM
 │   └── three/               dimensiones, texturas, doodle → textura
+├── data/
+│   ├── journal.ts           contenido del álbum de ejemplo (/demo)
+│   ├── landing.ts           Polaroids decorativas y toda la copy de la landing
+│   ├── spreads.ts           páginas → spreads → hojas (funciones puras)
+│   └── doodles.generated.ts autogenerado desde los SVG
 ├── hooks/                   media query, reduced motion, calidad, navegación,
 │                            typewriter, tamaño del libro, GSAP, audio
 └── components/
-    ├── experience/          escena 3D: diario procedural, entorno, partículas,
-    │                        doodles, cámara, intro
+    ├── experience/          escena 3D: entorno, partículas, doodles, cámara, intro
+    │   └── journal/         piezas del diario: tapas, lomo, páginas, cierre floral
     ├── journal/             álbum DOM: libro doble, libro móvil, página,
     │                        Polaroid, caption, controles
+    ├── landing/             las 9 secciones de la portada + Reveal y WashiTape
     └── ui/                  doodle inline, carga, música, fallback sin WebGL
 ```
 
@@ -255,7 +270,12 @@ interacción del usuario.
 
 ## Referencias
 
+- `AGENTS.md` — reglas de trabajo: verificación, estilo de código y qué hacer al
+  añadir cosas. Es el punto de entrada para quien (o lo que) vaya a escribir código.
+- `docs/DESIGN.md` — sistema de diseño de la landing y tabla de divergencias.
 - `manifest.json` — paleta y rutas de assets.
 - `docs/art-direction.png` — art board original (paleta, tipografías, storyboard).
 - `docs/references/` — fotografías del diario físico.
 - `ASSETS.md` — inventario del pack.
+- `docs/MODEL_SPEC.md` — **histórico**: especificación de un `journal.glb` que nunca
+  se autoró. El diario acabó siendo geometría procedural.
