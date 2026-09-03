@@ -39,8 +39,8 @@ Scripts:
 | `npm run dev` / `build` | Next.js. Ambos ejecutan antes `assets:doodles`. |
 | `npm run typecheck` | `tsc --noEmit` en modo estricto. |
 | `npm run assets:doodles` | Extrae los `d` de `public/assets/doodles/*.svg` a `src/data/doodles.generated.ts`. |
-| `npm run assets:photos` | Regenera las fotografías mock de `public/photos/` (sólo las de la demo). |
-| `npm run assets:landing` | Genera las imágenes decorativas de la landing y los recortes del diario en `public/assets/landing/`. |
+| `npm run assets:photos` | Descarga las fotografías (banco CC0) de `public/photos/` (sólo las de la demo). |
+| `npm run assets:landing` | Descarga las fotografías decorativas de la landing y deriva los recortes del diario en `public/assets/landing/`. |
 | `npx supabase start` / `stop` | Stack local en Docker. |
 | `npx supabase db reset` | Recrea la base aplicando las migraciones desde cero. |
 
@@ -112,10 +112,10 @@ La paginación, los spreads, las hojas del page flip, los puntos de navegación 
 el total de páginas se derivan de ese arreglo en `src/data/spreads.ts`. No hay
 páginas escritas a mano en el JSX.
 
-Las fotos de la demo son **mock**: duotonos abstractos generados por
-`scripts/make-mock-photos.mjs` porque el pack de assets no incluía fotografías.
-Para usar imágenes reales basta sobrescribir los archivos de `public/photos/`
-(cuadradas, WebP, ~1080px) o apuntar `photo` a otra ruta.
+Las fotos de la demo son reales, de un banco de imágenes CC0 (dominio público),
+descargadas por `scripts/fetch-demo-photos.mjs`. Para usar otras basta
+sobrescribir los archivos de `public/photos/` (cuadradas, WebP, ~960px) o
+apuntar `photo` a otra ruta.
 
 ## Arquitectura
 

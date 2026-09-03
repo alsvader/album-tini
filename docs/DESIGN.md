@@ -113,16 +113,17 @@ lugar:
 - Las Polaroids que el diseño rotula con recuerdos del álbum («Nuestro concierto»,
   «Atardecer mágico», «Mejores amigas», «Momentos inolvidables») usan las **fotos reales** de
   `journalEntries`.
-- Las cuatro decorativas sin equivalente (`escapada`, `tarde`, `risas`, `abrazos`) se
-  **generan** con el motor de `scripts/lib/mock-photo.mjs`, el mismo de las fotos de la demo.
-  Un generador es reproducible; esa CDN no.
+- Las cuatro decorativas sin equivalente (`escapada`, `tarde`, `risas`, `abrazos`) son fotos
+  reales de un banco CC0 (dominio público, sin atribución), elegidas a mano para encajar con
+  el `alt` que ya tenía cada una — descargadas por `scripts/make-landing-photos.mjs` y
+  comprometidas al repo, así que no dependen de esa CDN ni de ninguna otra en producción.
 - El pliego abierto y la portada de la sección 3 usan los **assets reales del diario**
   recortados al tamaño de render (`ASSETS.landingJournal`), no el render IA que traía el
   diseño: enseñarlo habría sido enseñar un producto que no existe. El pliego se compone en el
   JSX con la página interior real, doodles y una `<Polaroid>` de verdad encima.
 
 Peso: la portada original son 599 KB a 1600×2400 porque el libro 3D la usa como textura; los
-recortes la dejan en 17 y 39 KB. Todo `public/assets/landing/` ocupa 108 KB.
+recortes la dejan en 17 y 39 KB. Todo `public/assets/landing/` ocupa ~130 KB.
 
 ### Composición y comportamiento
 

@@ -164,8 +164,8 @@ preferencia activa reciba la página visible y sin depender de JavaScript.
 ### Tocar la paleta
 
 Manda **`src/app/globals.css`** y se propaga al diario 3D, las Polaroids y el álbum. Está
-duplicada a propósito en tres sitios más, y los cuatro se cambian juntos: `manifest.json`,
-`PALETTE` de `src/lib/assets.ts` y el `PALETTE` de `scripts/lib/mock-photo.mjs`.
+duplicada a propósito en dos sitios más, y los tres se cambian juntos: `manifest.json` y
+`PALETTE` de `src/lib/assets.ts`.
 
 Regla del propio `globals.css`: rosas, violetas y magentas dominan; el cyan y el lima son
 **solo acentos**.

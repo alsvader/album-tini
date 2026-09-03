@@ -26,7 +26,8 @@ Además, derivados generados (no forman parte del pack original):
 - `landing/journal-cover-sm.webp` — portada completa a 448x672.
 - `landing/journal-page.webp` — página interior a 640x960.
 - `landing/{escapada,tarde,risas,abrazos}.webp` — fotografías decorativas de las
-  Polaroids de la landing, generadas con el motor de `scripts/lib/mock-photo.mjs`.
+  Polaroids de la landing: fotos reales de banco (CC0), elegidas a mano para
+  encajar con el `alt` de cada una en `src/data/landing.ts`.
 
 Los cinco primeros se regeneran con `npm run assets:landing`.
 
