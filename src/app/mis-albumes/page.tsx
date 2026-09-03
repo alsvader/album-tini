@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getMyAlbums } from '@/lib/albums'
 import { AppNav } from '@/components/landing/AppNav'
+import { CopyLinkButton } from '@/components/ui/CopyLinkButton'
 import { Doodle } from '@/components/ui/Doodle'
+import { ShareWhatsAppButton } from '@/components/ui/ShareWhatsAppButton'
 
 export const metadata: Metadata = {
   title: 'Mis álbumes — Álbum de Tini',
@@ -60,10 +62,13 @@ export default async function MyAlbumsPage() {
         ) : (
           <ul className="mt-12 flex flex-col gap-3">
             {albums.map((album) => (
-              <li key={album.id}>
+              <li
+                key={album.id}
+                className="group rounded-2xl border border-soft-pink/15 bg-dark-violet/25 transition-colors hover:border-hot-pink/45"
+              >
                 <Link
                   href={`/album/${album.slug}`}
-                  className="group flex items-center justify-between gap-4 rounded-2xl border border-soft-pink/15 bg-dark-violet/25 px-5 py-4 transition-colors hover:border-hot-pink/45"
+                  className="flex items-center justify-between gap-4 px-5 py-4"
                 >
                   <div className="min-w-0">
                     <p className="truncate font-script text-2xl text-paper">{album.title}</p>
@@ -79,6 +84,22 @@ export default async function MyAlbumsPage() {
                     className="h-5 w-5 flex-none text-soft-pink/40 transition-colors group-hover:text-hot-pink"
                   />
                 </Link>
+                <div className="flex items-center gap-2 border-t border-soft-pink/10 px-5 py-3">
+                  <Link
+                    href={`/mis-albumes/${album.slug}/editar`}
+                    aria-label="Editar álbum"
+                    title="Editar álbum"
+                    className="grid h-9 w-9 place-items-center rounded-full border border-soft-pink/25 text-soft-pink transition-colors duration-300 hover:border-hot-pink/50 hover:text-hot-pink"
+                  >
+                    <Doodle name="pencil" className="h-4 w-4" />
+                  </Link>
+                  {album.published && (
+                    <>
+                      <CopyLinkButton slug={album.slug} />
+                      <ShareWhatsAppButton slug={album.slug} title={album.title} />
+                    </>
+                  )}
+                </div>
               </li>
             ))}
           </ul>

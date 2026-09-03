@@ -38,3 +38,15 @@ export const MAX_CAPTION = 60
 export function photoUrl(storagePath: string): string {
   return `${SUPABASE_URL}/storage/v1/object/public/${PHOTOS_BUCKET}/${storagePath}`
 }
+
+/**
+ * URL pública de un álbum para compartir.
+ *
+ * Se resuelve contra `window.location.origin` en vez de una env var de
+ * dominio propia (no existe ninguna hoy): el origen del visitante es siempre
+ * el correcto, tanto en producción como en preview.
+ */
+export function albumUrl(slug: string): string {
+  if (typeof window === 'undefined') return `/album/${slug}`
+  return `${window.location.origin}/album/${slug}`
+}

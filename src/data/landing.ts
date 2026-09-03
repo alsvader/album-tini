@@ -307,7 +307,8 @@ export const REASONS = [
  *
  * Los dos números salen de `albumRules` para que la landing no prometa un
  * límite que el formulario ya no aplica. Y la respuesta sobre editar dice lo
- * que hay: hoy `publishAlbum` sólo crea, no existe edición ni borrado.
+ * que hay: desde «Mis álbumes» se pueden añadir fotos, editar sus
+ * descripciones, reordenarlas y borrar el álbum, pero no tocar el título.
  */
 export const FAQ = [
   {
@@ -324,6 +325,6 @@ export const FAQ = [
   },
   {
     q: '¿Puedo editarlo después de publicarlo?',
-    a: 'Todavía no: por ahora el álbum se publica tal cual. La edición está en camino; hasta entonces, si quieres cambiar algo puedes crear uno nuevo.',
+    a: 'Puedes añadir fotos, editar sus descripciones, cambiar su orden o borrar el álbum entero desde «Mis álbumes». El título todavía no se puede editar; para eso, de momento, toca crear uno nuevo.',
   },
 ] as const

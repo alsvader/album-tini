@@ -308,7 +308,8 @@ en los docblocks correspondientes.
   divergencias en `docs/DESIGN.md`.
 - Falta `public/assets/audio/ambient.mp3`: `useAmbientAudio` está listo y el control se habilita
   solo cuando el archivo exista.
-- No hay editar ni borrar álbumes, ni reordenar fotos. El acceso con Facebook está cableado e
-  inactivo.
+- La edición permite añadir fotos, editar sus descripciones, reordenarlas y borrar el álbum
+  entero; no permite tocar el título, el subtítulo, el texto de cierre ni la "época" de una foto
+  ya guardada. El acceso con Facebook está cableado e inactivo.
 - Los ficheros de Storage huérfanos (pestaña muerta durante la subida) no se limpian.
 - `npm run lint` está roto y seguirá roto hasta que se instale un linter.

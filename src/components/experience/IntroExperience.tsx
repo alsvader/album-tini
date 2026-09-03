@@ -29,6 +29,8 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useQualitySettings, useQualityTierSync } from '@/hooks/useQualityTier'
 import { CLOSING, CLOSING_FADE, HANDOFF, INTRO, REDUCED } from '@/lib/timings'
 import { AlbumExperience } from '../journal/AlbumExperience'
+import { BackToAlbumsButton } from '../ui/BackToAlbumsButton'
+import { CopyLinkButton } from '../ui/CopyLinkButton'
 import { LoadingScreen } from '../ui/LoadingScreen'
 import { MusicToggle } from '../ui/MusicToggle'
 import { NoWebGLNotice, useWebGLSupport } from '../ui/NoWebGLFallback'
@@ -40,9 +42,13 @@ import type { AlbumData } from '@/data/spreads'
 type Props = {
   /** Contenido del álbum a mostrar: la demo o el de un usuario. */
   album: AlbumData
+  /** Si el visitante es el dueño del álbum: muestra los controles de dueño. */
+  isOwner?: boolean
+  /** Slug del álbum, para el botón de copiar enlace. */
+  slug?: string
 }
 
-export function IntroExperience({ album }: Props) {
+export function IntroExperience({ album, isOwner, slug }: Props) {
   const journalRef = useRef<Journal3DHandle | null>(null)
   const canvasWrapRef = useRef<HTMLDivElement>(null)
   const albumRef = useRef<HTMLDivElement>(null)
@@ -350,6 +356,12 @@ export function IntroExperience({ album }: Props) {
       <LoadingScreen visible={state === 'loading'} progress={progress} />
 
       {state === 'album' && <MusicToggle />}
+      {state === 'album' && isOwner && <BackToAlbumsButton />}
+      {state === 'album' && isOwner && slug && (
+        <div className="fixed left-4 top-16 z-40">
+          <CopyLinkButton slug={slug} />
+        </div>
+      )}
       {webglSupported === false && <NoWebGLNotice />}
     </main>
   )

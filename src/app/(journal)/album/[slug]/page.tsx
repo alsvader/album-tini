@@ -39,5 +39,5 @@ export default async function AlbumPage({ params }: Params) {
 
   if (!found) notFound()
 
-  return <IntroExperience album={found.album} />
+  return <IntroExperience album={found.album} isOwner={found.isOwner} slug={slug} />
 }

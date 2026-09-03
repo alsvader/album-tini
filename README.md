@@ -255,8 +255,10 @@ interacción del usuario.
   la página no deja rastro. Si la pestaña muere *durante* la subida quedan
   ficheros sin álbum: invisibles, pero ocupan espacio. Falta una tarea de
   limpieza.
-- Sin editar ni borrar álbumes, sin reordenar fotos, y Facebook cableado pero
-  no activo.
+- Se puede añadir fotos, editar sus descripciones, reordenarlas y borrar el
+  álbum entero desde «Mis álbumes», pero no editar el título, el subtítulo, el
+  texto de cierre ni la "época" de una foto ya guardada. Facebook sigue
+  cableado pero no activo.
 
 ## Despliegue a producción
 

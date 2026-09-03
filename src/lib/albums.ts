@@ -29,12 +29,14 @@ export type AlbumSummary = {
  */
 export async function getAlbumBySlug(
   slug: string,
-): Promise<{ album: AlbumData; photoUrls: string[] } | null> {
+): Promise<{ album: AlbumData; photoUrls: string[]; isOwner: boolean } | null> {
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('albums')
-    .select('id, title, subtitle, closing_text, album_photos(id, storage_path, caption, taken_label, position)')
+    .select(
+      'id, owner_id, title, subtitle, closing_text, album_photos(id, storage_path, caption, taken_label, position)',
+    )
     .eq('slug', slug)
     .maybeSingle()
 
@@ -42,6 +44,10 @@ export async function getAlbumBySlug(
 
   const photos = [...(data.album_photos ?? [])].sort((a, b) => a.position - b.position)
   if (photos.length === 0) return null
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   const entries: JournalEntry[] = photos.map((photo) => ({
     id: photo.id,
@@ -63,7 +69,54 @@ export async function getAlbumBySlug(
       },
     },
     photoUrls: entries.map((entry) => entry.photo),
+    isOwner: user?.id === data.owner_id,
   }
+}
+
+export type EditablePhoto = {
+  id: string
+  url: string
+  caption: string
+  takenLabel: string | null
+}
+
+/**
+ * Álbum listo para editar: solo lo devuelve si quien pide es el dueño.
+ *
+ * No reutiliza `getAlbumBySlug`: esa función sustituye `subtitle`/`closing`
+ * ausentes por el texto de relleno de la landing, perfecto para mostrar pero
+ * un desastre si un formulario lo precargara y el usuario lo guardara tal
+ * cual. Como la edición no toca esos campos, ni falta traerlos.
+ */
+export async function getAlbumForEdit(
+  slug: string,
+): Promise<{ id: string; title: string; photos: EditablePhoto[] } | null> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) return null
+
+  const { data, error } = await supabase
+    .from('albums')
+    .select('id, owner_id, title, album_photos(id, storage_path, caption, taken_label, position)')
+    .eq('slug', slug)
+    .maybeSingle()
+
+  if (error || !data || data.owner_id !== user.id) return null
+
+  const photos = [...(data.album_photos ?? [])]
+    .sort((a, b) => a.position - b.position)
+    .map((photo) => ({
+      id: photo.id,
+      url: photoUrl(photo.storage_path),
+      caption: photo.caption,
+      takenLabel: photo.taken_label,
+    }))
+
+  return { id: data.id, title: data.title, photos }
 }
 
 /**
