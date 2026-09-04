@@ -138,6 +138,18 @@ export function LoginForm({ next, googleError }: Props) {
             Continuar con Google
           </button>
         </form>
+
+        <p className="mt-4 text-center text-[0.7rem] text-paper-lilac/40">
+          Al continuar, aceptas los{' '}
+          <Link href="/terminos" className="underline decoration-paper-lilac/30 underline-offset-4 hover:text-soft-pink">
+            Términos
+          </Link>{' '}
+          y la{' '}
+          <Link href="/privacidad" className="underline decoration-paper-lilac/30 underline-offset-4 hover:text-soft-pink">
+            Política de Privacidad
+          </Link>
+          .
+        </p>
       </div>
     </div>
   )

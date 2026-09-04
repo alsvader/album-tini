@@ -5,6 +5,7 @@ import { AppNav } from '@/components/landing/AppNav'
 import { CopyLinkButton } from '@/components/ui/CopyLinkButton'
 import { Doodle } from '@/components/ui/Doodle'
 import { ShareWhatsAppButton } from '@/components/ui/ShareWhatsAppButton'
+import { DeleteAccountSection } from './DeleteAccountSection'
 
 export const metadata: Metadata = {
   title: 'Mis álbumes — Álbum de Tini',
@@ -104,6 +105,8 @@ export default async function MyAlbumsPage() {
             ))}
           </ul>
         )}
+
+        <DeleteAccountSection />
       </div>
     </main>
   )

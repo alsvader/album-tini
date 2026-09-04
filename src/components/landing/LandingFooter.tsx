@@ -40,6 +40,12 @@ export function LandingFooter() {
           <Link href="/crear" className="transition-colors hover:text-soft-pink">
             Crear un álbum
           </Link>
+          <Link href="/privacidad" className="transition-colors hover:text-soft-pink">
+            Privacidad
+          </Link>
+          <Link href="/terminos" className="transition-colors hover:text-soft-pink">
+            Términos
+          </Link>
         </nav>
 
         <p className="mt-4 text-[0.68rem] uppercase tracking-[0.3em] text-paper-lilac/30">
