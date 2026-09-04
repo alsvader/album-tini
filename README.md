@@ -268,6 +268,14 @@ interacción del usuario.
    el registro no devuelve sesión y el usuario se queda fuera.
 4. Authentication → URL Configuration con el dominio real, incluido
    `<dominio>/auth/callback`, necesario para el login con Google.
+5. **El dominio no puede ser un subdominio de Vercel (`*.vercel.app`).** La pantalla de
+   consentimiento OAuth de Google exige que el homepage esté en un dominio registrado a tu
+   nombre, comprobado por verificación de **dominio** (DNS) en Search Console; un
+   `*.vercel.app` es de Vercel Inc., así que Google lo rechaza con «el sitio web de tu
+   página principal no está registrado a tu nombre» aunque la etiqueta
+   `google-site-verification` de `src/app/layout.tsx` esté verificada. Por eso producción
+   corre en `https://www.mialbumtini.com` (dominio propio comprado aparte, añadido como
+   Custom Domain en Vercel y verificado por DNS), no en el subdominio por defecto.
 
 ## Referencias
 
