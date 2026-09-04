@@ -43,6 +43,12 @@ export const metadata: Metadata = {
     // Sin esto, X no muestra `og:image` como imagen grande al compartir.
     card: 'summary_large_image',
   },
+  // Prueba de propiedad para Search Console: la exige la verificación de la
+  // pantalla de consentimiento OAuth de Google, ya que el dominio es de
+  // Vercel y no admite verificación por DNS.
+  verification: {
+    google: 'yrMFfztc2HGvnadgshSg0lYa4ALw-j5_tvXd-EA1uLw',
+  },
 }
 
 export const viewport: Viewport = {
