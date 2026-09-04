@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Dancing_Script, Poppins } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import { MotionPreference } from '@/components/ui/MotionPreference'
 import './globals.css'
 
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <MotionPreference />
         {children}
+        <Analytics />
       </body>
     </html>
   )
