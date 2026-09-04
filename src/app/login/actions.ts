@@ -66,6 +66,22 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   redirect(safeNext(formData.get('next')))
 }
 
+/** Arranca el flujo de OAuth con Google; el navegador termina en `/auth/callback`. */
+export async function signInWithGoogle(formData: FormData) {
+  const supabase = await createClient()
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+  const redirectTo = `${siteUrl}/auth/callback?next=${encodeURIComponent(safeNext(formData.get('next')))}`
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo },
+  })
+
+  if (error || !data.url) redirect('/login?error=google-fallo')
+
+  redirect(data.url)
+}
+
 export async function signOut() {
   const supabase = await createClient()
   await supabase.auth.signOut()

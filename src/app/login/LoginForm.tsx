@@ -9,16 +9,41 @@
 
 import { useActionState, useState } from 'react'
 import Link from 'next/link'
-import { signIn, signUp, type AuthState } from './actions'
+import { signIn, signUp, signInWithGoogle, type AuthState } from './actions'
 import { Doodle } from '@/components/ui/Doodle'
 
 type Mode = 'entrar' | 'crear'
 
 type Props = {
   next: string
+  googleError?: boolean
 }
 
-export function LoginForm({ next }: Props) {
+/** Logotipo de Google: marca multicolor, no un doodle de trazo. */
+function GoogleIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} aria-hidden="true">
+      <path
+        fill="#FFC107"
+        d="M43.6 20.5H42V20.4H24v7.2h11.3c-1.6 4.6-6 7.9-11.3 7.9-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l5.4-5.4C34.5 5.3 29.5 3.2 24 3.2 12.6 3.2 3.2 12.6 3.2 24S12.6 44.8 24 44.8 44.8 35.4 44.8 24c0-1.2-.1-2.4-.3-3.5z"
+      />
+      <path
+        fill="#FF3D00"
+        d="M6.3 14.7l5.9 4.3c1.6-3.9 5.4-6.8 9.9-6.8 3.1 0 5.8 1.1 8 3l5.4-5.4C31.9 6.5 28.1 4.8 24 4.8c-7.2 0-13.4 4.1-16.5 10.1z"
+      />
+      <path
+        fill="#4CAF50"
+        d="M24 44.8c4.4 0 8.5-1.7 11.6-4.4l-5.3-4.5c-1.5 1.1-3.6 1.8-6.3 1.8-5.3 0-9.7-3.4-11.3-8.1l-5.9 4.5C9.9 40.4 16.4 44.8 24 44.8z"
+      />
+      <path
+        fill="#1976D2"
+        d="M43.6 20.5H42V20.4H24v7.2h11.3c-.8 2.2-2.2 4.1-4.1 5.4l5.3 4.5c-.4.3 6.3-4.6 6.3-13.6 0-1.2-.1-2.4-.3-3.5z"
+      />
+    </svg>
+  )
+}
+
+export function LoginForm({ next, googleError }: Props) {
   const [mode, setMode] = useState<Mode>('entrar')
   const action = mode === 'entrar' ? signIn : signUp
   const [state, formAction, pending] = useActionState<AuthState, FormData>(action, null)
@@ -97,22 +122,22 @@ export function LoginForm({ next }: Props) {
         {isSignUp ? 'Ya tengo cuenta' : 'No tengo cuenta todavía'}
       </button>
 
-      {/*
-        Acceso con Facebook: escrito y deshabilitado a propósito.
-        Activarlo es configuración, no código — las claves en supabase/config.toml
-        y en el panel de producción — más cambiar este botón por
-        `signInWithOAuth({ provider: 'facebook', options: { redirectTo: '…/auth/callback' } })`.
-      */}
       <div className="mt-10 border-t border-soft-pink/10 pt-8">
-        <button
-          type="button"
-          disabled
-          title="Disponible en cuanto se configuren las claves de Facebook"
-          className="w-full cursor-not-allowed rounded-full border border-soft-pink/15 px-6 py-3 text-sm text-paper-lilac/30"
-        >
-          Continuar con Facebook
-        </button>
-        <p className="mt-3 text-center text-xs text-paper-lilac/35">Muy pronto</p>
+        {googleError && (
+          <p role="alert" className="mb-4 rounded-xl bg-magenta/20 px-4 py-3 text-sm text-soft-pink">
+            No hemos podido entrar con Google. Inténtalo de nuevo.
+          </p>
+        )}
+        <form action={signInWithGoogle}>
+          <input type="hidden" name="next" value={next} />
+          <button
+            type="submit"
+            className="flex w-full items-center justify-center gap-3 rounded-full border border-soft-pink/25 px-6 py-3 text-sm text-paper transition-colors hover:border-hot-pink/60 hover:text-hot-pink"
+          >
+            <GoogleIcon className="h-4 w-4" />
+            Continuar con Google
+          </button>
+        </form>
       </div>
     </div>
   )

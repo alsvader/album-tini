@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>
+  searchParams: Promise<{ next?: string; error?: string }>
 }) {
   // En Next 16 `searchParams` es una promesa.
-  const { next } = await searchParams
+  const { next, error } = await searchParams
   const destination = next?.startsWith('/') && !next.startsWith('//') ? next : '/mis-albumes'
 
   return (
@@ -25,7 +25,7 @@ export default async function LoginPage({
             'radial-gradient(ellipse 80% 55% at 50% 10%, rgba(138,0,106,0.4) 0%, rgba(41,0,35,0.7) 45%, #160019 100%)',
         }}
       />
-      <LoginForm next={destination} />
+      <LoginForm next={destination} googleError={error === 'google-fallo'} />
     </main>
   )
 }

@@ -1,11 +1,9 @@
 /**
  * Punto de retorno del intercambio de código de Supabase.
  *
- * **Inerte en esta versión**: con la confirmación por email desactivada y sin
- * proveedores sociales activos, nada navega aquí todavía. Existe porque es la
- * URL de retorno que exige OAuth, y tenerla escrita es lo que permite activar
- * Facebook con sólo configuración: el `redirectTo` de
- * `signInWithOAuth` apuntará aquí sin tocar código.
+ * Es el `redirectTo` de `signInWithOAuth({ provider: 'google', ... })` en
+ * `src/app/login/actions.ts`: genérico a propósito, no depende del proveedor,
+ * así que activar otro proveedor social solo exige configuración.
  */
 
 import { NextResponse, type NextRequest } from 'next/server'

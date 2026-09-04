@@ -86,7 +86,7 @@ que ser literales— están en `AGENTS.md`.
 /login             acceso y registro
 /crear             subir fotos, escribir descripciones y publicar   (con sesión)
 /mis-albumes       listado de tus álbumes                            (con sesión)
-/auth/callback     retorno de OAuth — inerte hasta activar Facebook
+/auth/callback     retorno de OAuth (login con Google)
 ```
 
 ## Añadir fotografías al álbum de ejemplo
@@ -257,8 +257,7 @@ interacción del usuario.
   limpieza.
 - Se puede añadir fotos, editar sus descripciones, reordenarlas y borrar el
   álbum entero desde «Mis álbumes», pero no editar el título, el subtítulo, el
-  texto de cierre ni la "época" de una foto ya guardada. Facebook sigue
-  cableado pero no activo.
+  texto de cierre ni la "época" de una foto ya guardada.
 
 ## Despliegue a producción
 
@@ -268,7 +267,7 @@ interacción del usuario.
    lo desactiva `config.toml`; si en producción queda activado no da error, pero
    el registro no devuelve sesión y el usuario se queda fuera.
 4. Authentication → URL Configuration con el dominio real, incluido
-   `<dominio>/auth/callback`, necesario al activar Facebook.
+   `<dominio>/auth/callback`, necesario para el login con Google.
 
 ## Referencias
 

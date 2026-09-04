@@ -310,6 +310,6 @@ en los docblocks correspondientes.
   solo cuando el archivo exista.
 - La edición permite añadir fotos, editar sus descripciones, reordenarlas y borrar el álbum
   entero; no permite tocar el título, el subtítulo, el texto de cierre ni la "época" de una foto
-  ya guardada. El acceso con Facebook está cableado e inactivo.
+  ya guardada.
 - Los ficheros de Storage huérfanos (pestaña muerta durante la subida) no se limpian.
 - `npm run lint` está roto y seguirá roto hasta que se instale un linter.
