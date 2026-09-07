@@ -308,7 +308,8 @@ export const REASONS = [
  * Los dos números salen de `albumRules` para que la landing no prometa un
  * límite que el formulario ya no aplica. Y la respuesta sobre editar dice lo
  * que hay: desde «Mis álbumes» se pueden añadir fotos, editar sus
- * descripciones, reordenarlas y borrar el álbum, pero no tocar el título.
+ * descripciones, el subtítulo y el texto de cierre, reordenarlas y borrar el
+ * álbum, pero no tocar el título.
  */
 export const FAQ = [
   {
@@ -325,6 +326,6 @@ export const FAQ = [
   },
   {
     q: '¿Puedo editarlo después de publicarlo?',
-    a: 'Puedes añadir fotos, editar sus descripciones, cambiar su orden o borrar el álbum entero desde «Mis álbumes». El título todavía no se puede editar; para eso, de momento, toca crear uno nuevo.',
+    a: 'Puedes añadir fotos, editar sus descripciones, el subtítulo o el texto de cierre, cambiar su orden o borrar el álbum entero desde «Mis álbumes». El título todavía no se puede editar; para eso, de momento, toca crear uno nuevo.',
   },
 ] as const

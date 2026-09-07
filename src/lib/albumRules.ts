@@ -29,6 +29,16 @@ export const MAX_PHOTOS = 24
 export const MAX_CAPTION = 60
 
 /**
+ * Tope del subtítulo y del texto de cierre.
+ *
+ * Coincide con el `check (length(...) <= 120)` de `subtitle` y `closing_text`
+ * en la tabla `albums`. Dos constantes separadas, no una compartida, porque
+ * cada una vigila su propia columna y su propio check.
+ */
+export const MAX_SUBTITLE = 120
+export const MAX_CLOSING = 120
+
+/**
  * URL pública de una foto.
  *
  * Se construye a mano en lugar de llamar a `getPublicUrl` para no necesitar un

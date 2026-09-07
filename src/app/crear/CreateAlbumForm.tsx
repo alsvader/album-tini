@@ -17,7 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { PHOTOS_BUCKET } from '@/lib/supabase/env'
-import { MAX_CAPTION, MAX_PHOTOS } from '@/lib/albumRules'
+import { MAX_CAPTION, MAX_CLOSING, MAX_PHOTOS, MAX_SUBTITLE } from '@/lib/albumRules'
 import { resizeImage, UnsupportedImageError } from '@/lib/resizeImage'
 import { publishAlbum } from './actions'
 import { Doodle } from '@/components/ui/Doodle'
@@ -226,7 +226,7 @@ export function CreateAlbumForm() {
             <input
               value={subtitle}
               onChange={(event) => setSubtitle(event.target.value)}
-              maxLength={120}
+              maxLength={MAX_SUBTITLE}
               placeholder="un lugar para guardar lo que no quiero olvidar"
               className="rounded-xl border border-soft-pink/25 bg-dark-violet/40 px-4 py-3 text-sm text-paper outline-none transition-colors placeholder:text-paper-lilac/30 focus:border-hot-pink/60"
             />
@@ -239,7 +239,7 @@ export function CreateAlbumForm() {
             <input
               value={closing}
               onChange={(event) => setClosing(event.target.value)}
-              maxLength={120}
+              maxLength={MAX_CLOSING}
               placeholder="y la historia sigue…"
               className="rounded-xl border border-soft-pink/25 bg-dark-violet/40 px-4 py-3 text-sm text-paper outline-none transition-colors placeholder:text-paper-lilac/30 focus:border-hot-pink/60"
             />

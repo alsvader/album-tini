@@ -1,16 +1,14 @@
 'use client'
 
 /**
- * Edición de un álbum: añadir fotos, reordenarlas o borrarlo entero.
+ * Edición de un álbum: añadir fotos, reordenarlas, editar su descripción, y
+ * también su subtítulo y texto de cierre. Fuera de alcance a propósito: el
+ * título del álbum y la "época" de una foto que ya estaba guardada.
  *
  * Misma regla que `CreateAlbumForm`: nada toca la red hasta que se pulsa
  * «Guardar cambios». Las fotos nuevas viven como `URL.createObjectURL` local
  * y el orden se resuelve arrastrando (o con «Subir»/«Bajar», porque el
  * arrastre por puntero no es operable por teclado) hasta ese momento.
- *
- * También se puede editar la descripción de una foto ya guardada. Lo que
- * sigue fuera de alcance a propósito: el título, el subtítulo, el texto de
- * cierre y la "época" de una foto existente.
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -18,7 +16,7 @@ import { useRouter } from 'next/navigation'
 import { Reorder } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import { PHOTOS_BUCKET } from '@/lib/supabase/env'
-import { MAX_CAPTION, MAX_PHOTOS } from '@/lib/albumRules'
+import { MAX_CAPTION, MAX_CLOSING, MAX_PHOTOS, MAX_SUBTITLE } from '@/lib/albumRules'
 import { resizeImage, UnsupportedImageError } from '@/lib/resizeImage'
 import { deleteAlbum, saveAlbumPhotos, type SavePhotoItem } from './actions'
 import { Doodle } from '@/components/ui/Doodle'
@@ -42,12 +40,23 @@ type Phase = { kind: 'idle' } | { kind: 'uploading'; done: number; total: number
 type Props = {
   albumId: string
   title: string
+  initialSubtitle: string | null
+  initialClosing: string | null
   initialPhotos: EditablePhoto[]
 }
 
-export function EditAlbumForm({ albumId, title, initialPhotos }: Props) {
+export function EditAlbumForm({
+  albumId,
+  title,
+  initialSubtitle,
+  initialClosing,
+  initialPhotos,
+}: Props) {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const [subtitle, setSubtitle] = useState(initialSubtitle ?? '')
+  const [closing, setClosing] = useState(initialClosing ?? '')
 
   const [items, setItems] = useState<Item[]>(() =>
     initialPhotos.map((photo) => ({
@@ -201,7 +210,7 @@ export function EditAlbumForm({ albumId, title, initialPhotos }: Props) {
             },
       )
 
-      const result = await saveAlbumPhotos({ albumId, items: payload })
+      const result = await saveAlbumPhotos({ albumId, subtitle, closing, items: payload })
 
       if (!result.ok) {
         setError(result.error)
@@ -244,6 +253,36 @@ export function EditAlbumForm({ albumId, title, initialPhotos }: Props) {
         Añade fotos, edita sus descripciones, arrastra para reordenar y pulsa «Guardar cambios»
         cuando termines. Nada se guarda antes de eso.
       </p>
+
+      {/* ---------------- Subtítulo y cierre ---------------- */}
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <label className="flex flex-col gap-2">
+          <span className="text-[0.7rem] uppercase tracking-[0.22em] text-soft-pink/70">
+            Subtítulo <span className="normal-case tracking-normal opacity-60">(opcional)</span>
+          </span>
+          <input
+            value={subtitle}
+            onChange={(event) => setSubtitle(event.target.value)}
+            maxLength={MAX_SUBTITLE}
+            placeholder="un lugar para guardar lo que no quiero olvidar"
+            className="rounded-xl border border-soft-pink/25 bg-dark-violet/40 px-4 py-3 text-sm text-paper outline-none transition-colors placeholder:text-paper-lilac/30 focus:border-hot-pink/60"
+          />
+        </label>
+
+        <label className="flex flex-col gap-2">
+          <span className="text-[0.7rem] uppercase tracking-[0.22em] text-soft-pink/70">
+            Texto de cierre{' '}
+            <span className="normal-case tracking-normal opacity-60">(opcional)</span>
+          </span>
+          <input
+            value={closing}
+            onChange={(event) => setClosing(event.target.value)}
+            maxLength={MAX_CLOSING}
+            placeholder="y la historia sigue…"
+            className="rounded-xl border border-soft-pink/25 bg-dark-violet/40 px-4 py-3 text-sm text-paper outline-none transition-colors placeholder:text-paper-lilac/30 focus:border-hot-pink/60"
+          />
+        </label>
+      </div>
 
       {/* ---------------- Fotos actuales y nuevas ---------------- */}
       <Reorder.Group axis="y" values={items} onReorder={setItems} className="mt-8 flex flex-col gap-4">

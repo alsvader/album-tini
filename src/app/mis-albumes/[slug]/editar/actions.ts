@@ -20,7 +20,12 @@ export type SavePhotoItem =
   | { kind: 'existing'; id: string; position: number; caption: string }
   | { kind: 'new'; storagePath: string; caption: string; takenLabel?: string; position: number }
 
-export type SaveInput = { albumId: string; items: SavePhotoItem[] }
+export type SaveInput = {
+  albumId: string
+  subtitle?: string
+  closing?: string
+  items: SavePhotoItem[]
+}
 
 export type SaveResult = { ok: true } | { ok: false; error: string }
 
@@ -68,6 +73,21 @@ export async function saveAlbumPhotos(input: SaveInput): Promise<SaveResult> {
     if (!photo.storagePath?.startsWith(prefix)) {
       return { ok: false, error: `La foto nueva ${index + 1} no pertenece a este álbum.` }
     }
+  }
+
+  // Va antes de tocar fotos porque es la escritura más barata y sin
+  // dependencia de Storage: si falla, no se ha tocado nada más todavía.
+  const subtitle = input.subtitle?.trim() || null
+  const closing = input.closing?.trim() || null
+
+  const { error: metaError } = await supabase
+    .from('albums')
+    .update({ subtitle, closing_text: closing })
+    .eq('id', input.albumId)
+    .eq('owner_id', user.id)
+
+  if (metaError) {
+    return { ok: false, error: 'No se pudo guardar el subtítulo ni el texto de cierre.' }
   }
 
   if (newItems.length > 0) {

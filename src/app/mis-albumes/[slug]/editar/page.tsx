@@ -40,7 +40,13 @@ export default async function EditAlbumPage({
       />
       <AppNav />
       <div className="mx-auto w-full max-w-3xl pb-20">
-        <EditAlbumForm albumId={found.id} title={found.title} initialPhotos={found.photos} />
+        <EditAlbumForm
+          albumId={found.id}
+          title={found.title}
+          initialSubtitle={found.subtitle}
+          initialClosing={found.closingText}
+          initialPhotos={found.photos}
+        />
       </div>
     </main>
   )

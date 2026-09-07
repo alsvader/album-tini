@@ -85,12 +85,17 @@ export type EditablePhoto = {
  *
  * No reutiliza `getAlbumBySlug`: esa función sustituye `subtitle`/`closing`
  * ausentes por el texto de relleno de la landing, perfecto para mostrar pero
- * un desastre si un formulario lo precargara y el usuario lo guardara tal
- * cual. Como la edición no toca esos campos, ni falta traerlos.
+ * un desastre si un formulario lo precargara — el usuario lo guardaría tal
+ * cual, como si lo hubiera escrito él. Aquí se devuelven en crudo, `null` si
+ * nunca se pusieron, para que el formulario los muestre vacíos.
  */
-export async function getAlbumForEdit(
-  slug: string,
-): Promise<{ id: string; title: string; photos: EditablePhoto[] } | null> {
+export async function getAlbumForEdit(slug: string): Promise<{
+  id: string
+  title: string
+  subtitle: string | null
+  closingText: string | null
+  photos: EditablePhoto[]
+} | null> {
   const supabase = await createClient()
 
   const {
@@ -101,7 +106,9 @@ export async function getAlbumForEdit(
 
   const { data, error } = await supabase
     .from('albums')
-    .select('id, owner_id, title, album_photos(id, storage_path, caption, taken_label, position)')
+    .select(
+      'id, owner_id, title, subtitle, closing_text, album_photos(id, storage_path, caption, taken_label, position)',
+    )
     .eq('slug', slug)
     .maybeSingle()
 
@@ -116,7 +123,13 @@ export async function getAlbumForEdit(
       takenLabel: photo.taken_label,
     }))
 
-  return { id: data.id, title: data.title, photos }
+  return {
+    id: data.id,
+    title: data.title,
+    subtitle: data.subtitle,
+    closingText: data.closing_text,
+    photos,
+  }
 }
 
 /**
