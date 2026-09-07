@@ -32,6 +32,7 @@ import { CLOSING, CLOSING_FADE, HANDOFF, INTRO, REDUCED } from '@/lib/timings'
 import { AlbumExperience } from '../journal/AlbumExperience'
 import { BackToAlbumsButton } from '../ui/BackToAlbumsButton'
 import { CopyLinkButton } from '../ui/CopyLinkButton'
+import { HomeLinkButton } from '../ui/HomeLinkButton'
 import { LoadingScreen } from '../ui/LoadingScreen'
 import { MusicToggle } from '../ui/MusicToggle'
 import { NoWebGLNotice, useWebGLSupport } from '../ui/NoWebGLFallback'
@@ -50,6 +51,10 @@ type Props = {
 }
 
 export function IntroExperience({ album, isOwner, slug }: Props) {
+  // Quien no es el dueño no tiene «Volver a mis álbumes»: sin este enlace no
+  // tendría ningún camino de vuelta al resto del sitio. En `/demo` nadie es
+  // dueño (`isOwner` llega `undefined`), así que ahí se ve siempre.
+  const showHomeLink = !isOwner
   const journalRef = useRef<Journal3DHandle | null>(null)
   const canvasWrapRef = useRef<HTMLDivElement>(null)
   const albumRef = useRef<HTMLDivElement>(null)
@@ -357,10 +362,11 @@ export function IntroExperience({ album, isOwner, slug }: Props) {
 
       <LoadingScreen visible={state === 'loading'} progress={progress} />
 
+      {showHomeLink && <HomeLinkButton />}
       {state === 'album' && <MusicToggle />}
-      {state === 'album' && isOwner && <BackToAlbumsButton />}
-      {state === 'album' && isOwner && slug && (
-        <div className="fixed left-4 top-16 z-40">
+      {isOwner && <BackToAlbumsButton />}
+      {isOwner && slug && (
+        <div className="fixed left-16 top-4 z-40">
           <CopyLinkButton slug={slug} />
         </div>
       )}
