@@ -36,6 +36,7 @@ import { HomeLinkButton } from '../ui/HomeLinkButton'
 import { LoadingScreen } from '../ui/LoadingScreen'
 import { MusicToggle } from '../ui/MusicToggle'
 import { NoWebGLNotice, useWebGLSupport } from '../ui/NoWebGLFallback'
+import { ShareButton } from '../ui/ShareButton'
 import { IntroOverlay } from './IntroOverlay'
 import { ThreeCanvas } from './ThreeCanvas'
 import type { Journal3DHandle } from './Journal3D'
@@ -368,6 +369,11 @@ export function IntroExperience({ album, isOwner, slug }: Props) {
       {isOwner && slug && (
         <div className="fixed left-16 top-4 z-40">
           <CopyLinkButton slug={slug} />
+        </div>
+      )}
+      {isOwner && slug && (
+        <div className="fixed left-28 top-4 z-40">
+          <ShareButton slug={slug} title={album.meta.title} text={album.meta.subtitle} />
         </div>
       )}
       {webglSupported === false && <NoWebGLNotice />}
