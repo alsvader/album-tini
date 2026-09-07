@@ -25,6 +25,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useExperience } from '@/state/experience'
+import { useAlbumSoundtrack } from '@/hooks/useAlbumSoundtrack'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useQualitySettings, useQualityTierSync } from '@/hooks/useQualityTier'
 import { CLOSING, CLOSING_FADE, HANDOFF, INTRO, REDUCED } from '@/lib/timings'
@@ -81,6 +82,7 @@ export function IntroExperience({ album, isOwner, slug }: Props) {
   useQualityTierSync()
   const { keepCanvasAlive } = useQualitySettings()
   const webglSupported = useWebGLSupport()
+  useAlbumSoundtrack()
 
   /* ---------- Sin WebGL: se entra directo al álbum ---------- */
   useEffect(() => {
